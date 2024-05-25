@@ -24,7 +24,7 @@ jobs:
           mkdir -p '${{ github.workspace }}'/dist/socat-1.8.0.0
           cp ./socat.exe /usr/bin/msys-2.0.dll '${{ github.workspace }}'/dist/socat-1.8.0.0
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Socat (MSYS2)
-          path: ${{ github.workspace }}/dist/socat-1.8.0.0
+          path: ${{ github.workspace }}/dist
