@@ -1,0 +1,31 @@
+name: CI
+run-name: CI
+on: [workflow_dispatch]
+jobs:
+  Build-Socat-MSYS2:
+    name: Build Socat (MSYS2)
+    runs-on: windows-2022
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+          with:
+            update: true
+            install: autotools coreutils gcc tar wget
+      - name: Build
+        shell: msys2 {0}
+        run: |
+          wget 'http://www.dest-unreach.org/socat/download/socat-1.8.0.0.tar.gz'
+          tar xzvf 'socat-1.8.0.0.tar.gz'
+          cd 'socat-1.8.0.0'
+          ./configure --prefix=/usr/local --disable-openssl --disable-readline --disable-libwrap
+          make -j$(nproc)
+          make install
+          mkdir /tmp/socat-1.8.0.0
+          cp /usr/local/bin/socat.exe /usr/bin/msys-2.0.dll /tmp/socat-1.8.0.0
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Socat (MSYS2)
+          path: /tmp/socat-1.8.0.0
