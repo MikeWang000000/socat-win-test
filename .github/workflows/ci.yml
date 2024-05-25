@@ -21,11 +21,10 @@ jobs:
           cd 'socat-1.8.0.0'
           ./configure --disable-openssl --disable-readline --disable-libwrap
           make -j$(nproc)
-          mkdir ./socat-1.8.0.0
-          cp ./socat.exe /usr/bin/msys-2.0.dll ./socat-1.8.0.0
-          mv ./socat-1.8.0.0 '${{ github.workspace }}'
+          mkdir -p '${{ github.workspace }}'/dist/socat-1.8.0.0
+          cp ./socat.exe /usr/bin/msys-2.0.dll '${{ github.workspace }}'/dist/socat-1.8.0.0
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
           name: Socat (MSYS2)
-          path: ${{ github.workspace }}/socat-1.8.0.0
+          path: ${{ github.workspace }}/dist/socat-1.8.0.0
